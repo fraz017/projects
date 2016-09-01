@@ -26,6 +26,8 @@ permit_params :name, :technologies, :is_active
 
 		def destroy
 			@project = Project.friendly.find(params[:id])
+			@project.destroy
+			redirect_to "/admin/projects"
 		end
 	end
 
