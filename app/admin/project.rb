@@ -23,28 +23,30 @@ permit_params :name, :technologies, :is_active
 
 	controller do 
 		skip_before_filter :authenticate_active_admin_user, only: :show
-
+		def find_resource
+      scoped_collection.friendly.find(params[:id])
+    end
 		def show
-			@project = Project.friendly.find(params[:id])
-			render json: @project
+			render json: scoped_collection.friendly.find(params[:id])
 		end
 
-		def edit
-			@project = Project.friendly.find(params[:id])
-		end
+		# def edit
+		# 	@project = Project.friendly.find(params[:id])
+		# end
 
-		def update
-			@project = Project.friendly.find(params[:id])
-			p = params.require(:project).permit!
-			@project.update_attributes(p)
-			redirect_to admin_project_path(@project)
-		end
+		# def update
+		# 	@project = Project.friendly.find(params[:id])
+		# 	p = params.require(:project).permit!
+		# 	@project.update_attributes(p)
+		# 	redirect_to admin_project_path(@project)
+		# end
 
-		def destroy
-			@project = Project.friendly.find(params[:id])
-			@project.destroy
-			redirect_to "/admin/projects"
-		end
+		# def destroy
+		# 	@project = Project.friendly.find(params[:id])
+		# 	@project.destroy
+		# 	redirect_to "/admin/projects"
+		# end
+		
 	end
 
 end
