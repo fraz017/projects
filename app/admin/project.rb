@@ -12,6 +12,15 @@ permit_params :name, :technologies, :is_active
 #   permitted
 # end
 
+	form do |f|
+		f.inputs 'Project' do
+	    f.input :name
+	    f.input :technologies
+	    f.input :is_active, as: :radio
+	    f.actions
+	  end
+  end
+
 	controller do 
 		skip_before_filter :authenticate_active_admin_user, only: :show
 
@@ -22,6 +31,13 @@ permit_params :name, :technologies, :is_active
 
 		def edit
 			@project = Project.friendly.find(params[:id])
+		end
+
+		def update
+			@project = Project.friendly.find(params[:id])
+			p = params.require(:project).permit!
+			@project.update_attributes(p)
+			redirect_to admin_project_path(@project)
 		end
 
 		def destroy
